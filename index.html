@@ -172,26 +172,41 @@
     }
 
     function applyFilters() {
-      const searchQuery = document.getElementById("search").value.toLowerCase();
-      const selectedDate = document.getElementById("dateFilter").value;
-      const winnerQuery = document.getElementById("winnerFilter").value.toLowerCase();
+  const searchQuery = document.getElementById("search").value.toLowerCase();
+  const selectedDate = document.getElementById("dateFilter").value;
+  const winnerQuery = document.getElementById("winnerFilter").value.toLowerCase();
 
-      const filtered = fixtures.filter(f =>
-        (f.Player1.toLowerCase().includes(searchQuery) || f.Player2.toLowerCase().includes(searchQuery)) &&
-        (selectedDate === "" || f.Date === selectedDate) &&
-        (winnerQuery === "" || f.Winner.toLowerCase().includes(winnerQuery))
-      );
+  const filtered = fixtures.filter(f =>
+    (f.Player1.toLowerCase().includes(searchQuery) || f.Player2.toLowerCase().includes(searchQuery)) &&
+    (selectedDate === "" || f.Date === selectedDate) &&
+    (winnerQuery === "" || f.Winner.toLowerCase().includes(winnerQuery))
+  );
 
-      const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to midnight
 
-      const todayMatches = filtered.filter(f => f.Date === today);
-      const upcomingMatches = filtered.filter(f => f.Date > today);
-      const pastMatches = filtered.filter(f => f.Date < today);
+  const todayMatches = [];
+  const upcomingMatches = [];
+  const pastMatches = [];
 
-      renderTable(todayMatches, "todayTable");
-      renderTable(upcomingMatches, "upcomingTable");
-      renderTable(pastMatches, "pastTable");
+  filtered.forEach(f => {
+    const matchDate = new Date(f.Date);
+    matchDate.setHours(0, 0, 0, 0); // Normalize
+
+    if (matchDate.getTime() === today.getTime()) {
+      todayMatches.push(f);
+    } else if (matchDate > today) {
+      upcomingMatches.push(f);
+    } else {
+      pastMatches.push(f);
     }
+  });
+
+  renderTable(todayMatches, "todayTable");
+  renderTable(upcomingMatches, "upcomingTable");
+  renderTable(pastMatches, "pastTable");
+}
+
 
     function resetFilters() {
       document.getElementById("search").value = "";
