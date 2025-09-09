@@ -17,16 +17,35 @@
       color: #2c3e50;
     }
 
+    .filter-toggle {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .filter-toggle button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .controls {
       max-width: 900px;
-      margin: 20px auto;
-      display: flex;
+      margin: 10px auto 20px;
+      display: none;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    input, button {
+    .controls input, .controls button {
       padding: 10px;
       font-size: 1em;
       border: 1px solid #ccc;
@@ -44,12 +63,18 @@
       padding-bottom: 5px;
     }
 
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 30px;
+    }
+
     table {
       width: 100%;
+      min-width: 600px;
       border-collapse: collapse;
       background: white;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
     }
 
     th, td {
@@ -72,67 +97,138 @@
       margin-top: 40px;
       color: #777;
     }
+
+    /* Mobile card layout */
+    @media (max-width: 768px) {
+      #todayTable, #upcomingTable {
+        display: none;
+      }
+
+      #todayCards, #upcomingCards {
+        display: block;
+      }
+
+      #pastTable {
+        display: table;
+      }
+
+      .match-card {
+        background: white;
+        margin: 10px auto;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 90%;
+      }
+
+      .match-card h3 {
+        margin: 0;
+        font-size: 1.1em;
+        color: #2c3e50;
+      }
+
+      .match-card p {
+        margin: 5px 0;
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      .card-section {
+        margin-top: 30px;
+      }
+
+      .card-section h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    @media (min-width: 769px) {
+      #todayCards, #upcomingCards {
+        display: none;
+      }
+
+      #todayTable, #upcomingTable, #pastTable {
+        display: table;
+      }
+    }
   </style>
 </head>
 <body>
 
   <h1>TLTA Tennis Academy Fixtures</h1>
 
-  <div class="controls">
+  <div class="filter-toggle">
+    <button onclick="toggleFilters()">Show/Hide Filters</button>
+  </div>
+
+  <div class="controls" id="filters">
     <input type="text" id="search" placeholder="Search by player name...">
     <input type="date" id="dateFilter">
     <input type="text" id="winnerFilter" placeholder="Filter by winner...">
+    <input type="text" id="venueFilter" placeholder="Filter by venue...">
     <button onclick="resetFilters()">Reset Filters</button>
   </div>
 
   <section>
     <h2>Today's Matches</h2>
-    <table id="todayTable">
-      <thead>
-        <tr>
-          <th>Player 1</th>
-          <th>Player 2</th>
-          <th>Time</th>
-          <th>Date</th>
-          <th>Venue</th>
-          <th>Winner</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="todayTable">
+        <thead>
+          <tr>
+            <th>Player 1</th>
+            <th>Player 2</th>
+            <th>Time</th>
+            <th>Venue</th>
+            <th>Winner</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="todayCards"></div>
 
     <h2>Upcoming Matches</h2>
-    <table id="upcomingTable">
-      <thead>
-        <tr>
-          <th>Player 1</th>
-          <th>Player 2</th>
-          <th>Time</th>
-          <th>Date</th>
-          <th>Venue</th>
-          <th>Winner</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="upcomingTable">
+        <thead>
+          <tr>
+            <th>Player 1</th>
+            <th>Player 2</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Venue</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="upcomingCards"></div>
 
     <h2>Past Matches</h2>
-    <table id="pastTable">
-      <thead>
-        <tr>
-          <th>Player 1</th>
-          <th>Player 2</th>
-          <th>Time</th>
-          <th>Date</th>
-          <th>Venue</th>
-          <th>Winner</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="pastTable">
+        <thead>
+          <tr>
+            <th>Player 1</th>
+            <th>Player 2</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Winner</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </section>
 
   <footer>
@@ -142,6 +238,11 @@
   <script>
     const CSV_URL = "https://tltatennis.github.io/fixtures.csv";
     let fixtures = [];
+
+    function toggleFilters() {
+      const filters = document.getElementById("filters");
+      filters.style.display = filters.style.display === "flex" ? "none" : "flex";
+    }
 
     async function loadCSV() {
       const response = await fetch(CSV_URL);
@@ -154,70 +255,98 @@
       applyFilters();
     }
 
-    function renderTable(data, tableId) {
+    function formatDate(dateStr) {
+      const [year, month, day] = dateStr.split("-");
+      return `${day}/${month}/${year}`;
+    }
+
+    function renderTable(data, tableId, options = {}) {
       const tbody = document.querySelector(`#${tableId} tbody`);
       tbody.innerHTML = "";
       data.forEach(f => {
-        const row = `<tr>
-          <td>${f.Player1}</td>
-          <td>${f.Player2}</td>
-          <td>${f.Time}</td>
-          <td>${f.Date}</td>
-          <td>${f.Venue}</td>
-          <td>${f.Winner}</td>
-          <td>${f.Score}</td>
-        </tr>`;
+        let row = "<tr>";
+        row += `<td>${f.Player1}</td>`;
+        row += `<td>${f.Player2}</td>`;
+        row += `<td>${f.Time}</td>`;
+        if (!options.hideDate) row += `<td>${formatDate(f.Date)}</td>`;
+        row += `<td>${f.Venue}</td>`;
+        if (!options.hideWinner) row += `<td>${f.Winner || ""}</td>`;
+        if (!options.hideScore) row += `<td>${f.Score || ""}</td>`;
+        row += "</tr>";
         tbody.innerHTML += row;
       });
     }
 
-    function applyFilters() {
-  const searchQuery = document.getElementById("search").value.toLowerCase();
-  const selectedDate = document.getElementById("dateFilter").value;
-  const winnerQuery = document.getElementById("winnerFilter").value.toLowerCase();
-
-  const filtered = fixtures.filter(f =>
-    (f.Player1.toLowerCase().includes(searchQuery) || f.Player2.toLowerCase().includes(searchQuery)) &&
-    (selectedDate === "" || f.Date === selectedDate) &&
-    (winnerQuery === "" || f.Winner.toLowerCase().includes(winnerQuery))
-  );
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Normalize to midnight
-
-  const todayMatches = [];
-  const upcomingMatches = [];
-  const pastMatches = [];
-
-  filtered.forEach(f => {
-    const matchDate = new Date(f.Date);
-    matchDate.setHours(0, 0, 0, 0); // Normalize
-
-    if (matchDate.getTime() === today.getTime()) {
-      todayMatches.push(f);
-    } else if (matchDate > today) {
-      upcomingMatches.push(f);
-    } else {
-      pastMatches.push(f);
+    function renderCards(data, containerId, options = {}) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      data.forEach(f => {
+        const card = document.createElement("div");
+        card.className = "match-card";
+        card.innerHTML = `
+          <h3>${f.Player1} vs ${f.Player2}</h3>
+          <p><strong>Time:</strong> ${f.Time}</p>
+          <p><strong>Venue:</strong> ${f.Venue}</p>
+          ${options.showWinner && f.Winner ? `<p><strong>Winner:</strong> ${f.Winner}</p>` : ""}
+          ${options.showScore && f.Score ? `<p><strong>Score:</strong> ${f.Score}</p>` : ""}
+        `;
+        container.appendChild(card);
+      });
     }
-  });
 
-  renderTable(todayMatches, "todayTable");
-  renderTable(upcomingMatches, "upcomingTable");
-  renderTable(pastMatches, "pastTable");
-}
+    function applyFilters() {
+      const searchQuery = document.getElementById("search").value.toLowerCase();
+      const selectedDate = document.getElementById("dateFilter").value;
+      const winnerQuery = document.getElementById("winnerFilter").value.toLowerCase();
+      const venueQuery = document.getElementById("venueFilter").value.toLowerCase();
 
+      const filtered = fixtures.filter(f =>
+        (f.Player1.toLowerCase().includes(searchQuery) || f.Player2.toLowerCase().includes(searchQuery)) &&
+        (selectedDate === "" || f.Date === selectedDate) &&
+        (winnerQuery === "" || f.Winner.toLowerCase().includes(winnerQuery)) &&
+        (venueQuery === "" || f.Venue.toLowerCase().includes(venueQuery))
+      );
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const todayMatches = [];
+      const upcomingMatches = [];
+      const pastMatches = [];
+
+      filtered.forEach(f => {
+        const matchDate = new Date(f.Date);
+        matchDate.setHours(0, 0, 0, 0);
+
+        if (matchDate.getTime() === today.getTime()) {
+          todayMatches.push(f);
+        } else if (matchDate > today) {
+          upcomingMatches.push(f);
+        } else {
+          pastMatches.push(f);
+        }
+      });
+
+      renderTable(todayMatches, "todayTable", { hideDate: true });
+      renderTable(upcomingMatches, "upcomingTable", { hideWinner: true, hideScore: true });
+      renderTable(pastMatches, "pastTable");
+
+      renderCards(todayMatches, "todayCards", { showWinner: true, showScore: true });
+      renderCards(upcomingMatches, "upcomingCards");
+    }
 
     function resetFilters() {
       document.getElementById("search").value = "";
       document.getElementById("dateFilter").value = "";
       document.getElementById("winnerFilter").value = "";
+      document.getElementById("venueFilter").value = "";
       applyFilters();
     }
 
     document.getElementById("search").addEventListener("input", applyFilters);
     document.getElementById("dateFilter").addEventListener("change", applyFilters);
     document.getElementById("winnerFilter").addEventListener("input", applyFilters);
+    document.getElementById("venueFilter").addEventListener("input", applyFilters);
 
     loadCSV();
   </script>
