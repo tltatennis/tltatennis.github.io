@@ -314,6 +314,7 @@
         card.className = "match-card";
         card.innerHTML = `
           <h3>${f.Player1} vs ${f.Player2}</h3>
+          ${options.showDate ? `<p><strong>Date:</strong> ${formatDate(f.Date)}</p>` : ""}
           <p><strong>Time:</strong> ${f.Time}</p>
           <p><strong>Venue:</strong> ${f.Venue}</p>
           ${options.showWinner && f.Winner ? `<p><strong>Winner:</strong> ${f.Winner}</p>` : ""}
@@ -359,11 +360,11 @@
       });
 
       renderTable(todayMatches, "todayTable", { hideDate: true });
-      renderTable(upcomingMatches, "upcomingTable", { hideWinner: true, hideScore: true });
+      renderTable(upcomingMatches, "upcomingTable", { hideWinner: true, hideScore: true, hideDate: false  });
       renderTable(pastMatches, "pastTable");
 
       renderCards(todayMatches, "todayCards", { showWinner: true, showScore: true });
-      renderCards(upcomingMatches, "upcomingCards");
+      renderCards(upcomingMatches, "upcomingCards", { showDate: true});
     }
 
     function resetFilters() {
